@@ -34,8 +34,8 @@ router.get('/:id', async(req, res) => {
 
     // Handle server errors    
     } catch (err) {
-        res.status(500);
-        res.send(err.message);   
+      console.log('GET product/:id - ', err.message);
+      res.sendStatus(500);  
     }
 });
 
@@ -80,7 +80,7 @@ router.post('/', async(req, res) => {
     res.status(400).json({ content: "error" });
   }
   // log the data to the console
-  console.log(`product data sent:\n ${new_product}`);
+  console.log(`product data sent:\n ${JSON.stringify(new_product)}`);
 
   // Call productService to create the new product
   try {
@@ -91,8 +91,8 @@ router.post('/', async(req, res) => {
 
     // Catch and send errors
   } catch (err) {
-    res.status(500);
-    res.send(err.message);
+    console.log('POST product/ - ', err.message);
+    res.sendStatus(500);  
   }
 
 });

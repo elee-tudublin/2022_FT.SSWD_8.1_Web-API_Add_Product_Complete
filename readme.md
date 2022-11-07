@@ -6,9 +6,9 @@ Enda Lee 2022
 
 1. Download or `fork` the start site from this repository.
 2. Open in VS Code.
-3. copy `.env.example` to `.env` and configure for your database.
-4. In a terminal run `npm install` and if necessary `npx prisma generate`
-5. Start the application using `npm run dev`
+2. copy `.env.example` to `.env` and configure for your database.
+3. In a terminal run `npm install` and if necessary `npx prisma generate`
+4. Start the application using `npm run dev`
 
 
 
@@ -36,27 +36,27 @@ We need a new endpoint in the **`product controller`** to accept **`POST`** requ
 router.post('/', async(req, res) => {
 
   // read data request body, this will be the new product
-  const newProduct = req.body;
+  const new_product = req.body;
   
   // If data missing return 400
-  if (typeof newProduct === "undefined") {
+  if (typeof new_product === "undefined") {
     res.statusMessage = "Bad Request - missing product data";
-    res.status(400).json({ content: "error" });
+    res.status(400).json({ content: "Bad Request - missing product data" });
   }
   // log the data to the console
-  console.log(`product data sent:\n ${newProduct}`);
+  console.log(`product data sent:\n ${JSON.stringify(new_product)}`);
 
   // Call productService to create the new product
   try {
-    const result = await productService.addNewProduct(newProduct);
+    const result = await productService.addNewProduct(new_product);
 
     // Send response back to client
     res.json(result);
 
     // Catch and send errors
   } catch (err) {
-    res.status(500);
-    res.send(err.message);
+	  console.log('POST product/ - ', err.message);
+      res.sendStatus(500);
   }
 
 });
@@ -66,7 +66,7 @@ router.post('/', async(req, res) => {
 
 ### 1.2. The service
 
-The **`addNewProduct( newProduct )`** function will first validate `newProduct`. 
+The **`addNewProduct( new_product)`** function will first validate `new_product`. 
 
 ```javascript
 // This function accepts product data which it validates.
@@ -80,7 +80,7 @@ async function addNewProduct(product_data) {
     let validated_product = productValidator.validateNewProduct(product_data); 
 
     // If validation returned a product object - save to database
-    if (validated) {
+    if (validated_product) {
       // Insert
       result = await productData.createProduct(validated_product);
 
@@ -171,7 +171,7 @@ module.exports = {
 }
 ```
 
-
+*Don't forget to import `productValidator` in `productService.js`*
 
 Also create a new folder named `models` and add a new file, **`product.js`** to the folder. This will define a **`Product`** object for use by the validator.
 
@@ -209,13 +209,13 @@ The following function, **`createProduct()`** goes into **`productData.js`**
 // Return the result
 //
 async function createProduct(product) {
-    let newProduct;
+    let new_product;
 
     // execute query using prisma.product.create
     // Note the data object
     try {
         // New product so no id
-        newProduct = await prisma.product.create({
+        new_product = await prisma.product.create({
             data: {
                 category_id: Number(product.category_id), 
                 product_name: product.product_name, 
@@ -232,7 +232,7 @@ async function createProduct(product) {
 
     }
     // return the new product
-    return newProduct;
+    return new_product;
 }
 ```
 
@@ -316,7 +316,7 @@ This is very similar to insert/ POST but uses a HTTP PUT request. also sends the
 
 This is very similar to getting a single product but uses the HTTP DELETE method instead of GET. Add the function and test with Insomnia.
 
-**3.**   **Use Insomnia to test the new endpoints.**
+**3.**   **Use Thunder Client to test the new endpoints.**
 
 
 

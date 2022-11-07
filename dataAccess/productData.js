@@ -83,13 +83,13 @@ async function getProductsByCatId(catId) {
 // Return the result
 //
 async function createProduct(product) {
-    let newProduct;
+    let new_product;
 
     // execute query using prisma.product.create
     // Note the data object
     try {
         // New product so no id
-        newProduct = await prisma.product.create({
+        new_product = await prisma.product.create({
             data: {
                 category_id: Number(product.category_id), 
                 product_name: product.product_name, 
@@ -106,7 +106,7 @@ async function createProduct(product) {
 
     }
     // return the new product
-    return newProduct;
+    return new_product;
 }
 
 // Export 
