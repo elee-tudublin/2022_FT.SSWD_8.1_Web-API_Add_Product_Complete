@@ -151,11 +151,11 @@ async function updateProduct(product) {
 const deletetProductById = async(id) => {
 
     // Define variable
-    let product;
+    let deleted_confirm;
 
     try {
         // use where with findUnique
-        product = await prisma.product.delete ({
+        deleted_confirm = await prisma.product.delete ({
             where: {id: id}
         });
 
@@ -166,11 +166,8 @@ const deletetProductById = async(id) => {
 
     }
     // return result
-    return product;
+    return deleted_confirm;
 }
-
-
-
 
 // Export 
 module.exports = {
