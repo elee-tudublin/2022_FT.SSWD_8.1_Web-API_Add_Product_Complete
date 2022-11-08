@@ -53,8 +53,30 @@ function validateNewProduct(product) {
     return validated_product;
 }
 
+
+const validateUpdate = (product) => {
+
+    // Use existing validator
+    let validated_product = validateNewProduct(product);
+
+    // validate id
+    if (validateId(product.id)) {
+        validated_product.id = product.id
+    }  else {
+        // debug
+        console.log("validateUpdate(): Validation failed - bad id");
+    }
+
+    // return new validated product object
+    return validated_product;
+}
+
+
+
+
 // Module exports
 // expose these functions
 module.exports = {
-  validateNewProduct
+  validateNewProduct,
+  validateUpdate
 }

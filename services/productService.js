@@ -33,7 +33,7 @@ async function getProductById(id) {
     // return the product
     return product;
   } else {
-    return "Invalid product id";
+    return "get product by id service - Invalid product id";
   }
 }
 
@@ -52,7 +52,7 @@ async function getProductsByCatId(id) {
     return products;
 
   } else {
-      return "Invalid product id";
+      return "get by cat service - Invalid product id";
   }
 }
 
@@ -74,8 +74,50 @@ async function addNewProduct(product_data) {
       return result;
     
     } else {
-      return ('invalid product data');
+      return ('add product service - invalid product data');
     }
+}
+
+
+// This function accepts product data which it validates.
+// If validation passes then pass the product data to the data access layer
+async function updateProduct(product_data) {
+
+  // declare variables
+  let result;
+
+    // Call the product validator - kept seperate to avoid clutter here
+    let validated_product = productValidator.validateUpdate(product_data); 
+
+    // If validation returned a product object - save to database
+    if (validated_product) {
+      // Insert
+      result = await productData.createProduct(validated_product);
+
+      return result;
+    
+    } else {
+      return ('update service - invalid product data');
+    }
+}
+
+
+// 
+// Function to delete product by id
+//
+async function deletetProductById(id) {
+  // validate the id
+  const validated_id = validate.validateId(id);
+
+  if (validated_id) {
+    // Call the data access function to get product with matching id
+    const product = await productData.deletetProductById(validated_id);
+
+    // return the product
+    return product;
+  } else {
+    return "delete service - Invalid product id";
+  }
 }
 
 
@@ -86,7 +128,9 @@ module.exports = {
     getProducts,
     getProductById,
     getProductsByCatId,
-    addNewProduct
+    addNewProduct,
+    updateProduct,
+    deletetProductById
 };
 
 
