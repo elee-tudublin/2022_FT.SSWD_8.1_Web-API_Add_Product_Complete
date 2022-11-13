@@ -71,10 +71,16 @@ async function addNewProduct(product_data) {
       // Insert
       result = await productData.createProduct(validated_product);
 
-      return result;
+      return {
+        product: result,
+        message: `product added with id: ${result.id}`
+      }
     
     } else {
-      return ('add product service - invalid product data');
+      return {
+        product: product_data,
+        message: 'add product service - invalid product data'
+      }
     }
 }
 
@@ -94,10 +100,18 @@ async function updateProduct(product_data) {
       // Insert
       result = await productData.createProduct(validated_product);
 
+      return {
+        product: result,
+        message: `product with id: ${result.id} updated`
+      }
+
       return result;
     
     } else {
-      return ('update service - invalid product data');
+      return {
+        product: product_data,
+        message: 'update product service - invalid product data'
+      }
     }
 }
 
